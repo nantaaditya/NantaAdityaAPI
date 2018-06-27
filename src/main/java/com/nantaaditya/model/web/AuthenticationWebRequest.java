@@ -1,7 +1,10 @@
 package com.nantaaditya.model.web;
 
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
+
 import org.hibernate.validator.constraints.NotBlank;
 // @formatter:off
 /**
@@ -13,6 +16,8 @@ import org.hibernate.validator.constraints.NotBlank;
 
 @Data
 @Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class AuthenticationWebRequest implements WebRequest {
 
   @NotBlank(message = "username is required")

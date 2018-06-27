@@ -29,18 +29,18 @@ public abstract class AbstractCommand<RESPONSE, REQUEST extends CommandRequest>
   protected ApplicationContext applicationContext;
 
   @Override
-  public final void setApplicationContext(ApplicationContext applicationContext)
+  public void setApplicationContext(ApplicationContext applicationContext)
       throws BeansException {
     this.applicationContext = applicationContext;
   }
 
   @Override
-  public final void afterPropertiesSet() throws Exception {
+  public void afterPropertiesSet() throws Exception {
     this.validator = applicationContext.getBean(Validator.class);
   }
 
   @Override
-  public final RESPONSE execute(REQUEST request) {
+  public RESPONSE execute(REQUEST request) {
     Set<ConstraintViolation<REQUEST>> constraintViolations = validator.validate(request);
     if (constraintViolations.isEmpty()) {
       return doExecute(request);
