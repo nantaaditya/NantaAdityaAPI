@@ -16,7 +16,7 @@ public interface ApiPath {
   String CHANGE_PASSWORD = API + "/change-password";
   String STATIC = "/static";
 
-  String ABOUT = API + "/about";
+  String ABOUT_ME = API + "/about-me";
   String EDUCATION = API + "/education";
   String SKILL = API + "/skill";
   String PROJECT = API + "/project";

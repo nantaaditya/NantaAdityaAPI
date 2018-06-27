@@ -59,7 +59,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
             "/configuration/**", "/v2/api-docs", "favicon.ico", "/WEB-INF/jsp/**", "/css/**",
             "/js/**", "/img/**")
         .antMatchers(HttpMethod.GET, ApiPath.EDUCATION)
-        .antMatchers(HttpMethod.GET, ApiPath.ABOUT)
+        .antMatchers(HttpMethod.GET, ApiPath.ABOUT_ME)
         .antMatchers(HttpMethod.GET, ApiPath.SKILL)
         .antMatchers(HttpMethod.GET, ApiPath.PROJECT)
         .antMatchers(HttpMethod.GET, ApiPath.PICTURE + "/*")
