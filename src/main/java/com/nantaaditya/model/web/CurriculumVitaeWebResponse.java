@@ -16,7 +16,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class CurriculumVitaeWebResponse implements WebRequest {
+public class CurriculumVitaeWebResponse{
 
   private String name;
   private String timeStart;
