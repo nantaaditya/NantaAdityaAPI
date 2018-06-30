@@ -1,6 +1,5 @@
 package com.nantaaditya.service.command;
 
-import com.nantaaditya.model.command.CommandRequest;
 import com.nantaaditya.model.exception.CommandValidationException;
 import java.util.List;
 import java.util.Set;
@@ -21,7 +20,7 @@ import org.springframework.context.ApplicationContextAware;
  **/
 // @formatter:on
 
-public abstract class AbstractCommand<RESPONSE, REQUEST extends CommandRequest>
+public abstract class AbstractCommand<RESPONSE, REQUEST>
     implements Command<RESPONSE, REQUEST>, ApplicationContextAware, InitializingBean {
 
   protected Validator validator;
