@@ -17,13 +17,13 @@ import org.hibernate.validator.constraints.NotBlank;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class CurriculumVitaeWebRequest implements WebRequest{
+public class CurriculumVitaeWebRequest implements WebRequest {
 
   @NotBlank(message = "name is required")
   private String name;
-  @NotBlank(message = "start is required")
-  private String start;
-  @NotBlank(message = "end is required")
-  private String end;
+  @NotBlank(message = "time is required")
+  private String timeStart;
+  @NotBlank(message = "time timeEnd is required")
+  private String timeEnd;
   private String description;
 }
