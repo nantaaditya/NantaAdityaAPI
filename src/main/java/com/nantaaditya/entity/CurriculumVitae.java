@@ -23,7 +23,7 @@ import lombok.NoArgsConstructor;
 public class CurriculumVitae extends AbstractEntity {
 
   private String name;
-  private String start;
-  private String end;
+  private String timeStart;
+  private String timeEnd;
   private String description;
 }
