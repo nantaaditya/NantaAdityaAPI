@@ -39,8 +39,8 @@ public class SaveCurriculumVitaeCommandImplTest {
   private CurriculumVitae curriculumVitae;
   private CurriculumVitaeCommandRequest curriculumVitaeCommandRequest;
   private static final String NAME = "name";
-  private static final String START = "start";
-  private static final String END = "end";
+  private static final String TIME_START = "time start";
+  private static final String TIME_END = "time end";
   private static final String DESCRIPTION = "description";
 
   @Before
@@ -82,12 +82,14 @@ public class SaveCurriculumVitaeCommandImplTest {
   }
 
   private CurriculumVitae generateCurriculumVitae() {
-    return CurriculumVitae.builder().name(NAME).start(START).end(END).description(DESCRIPTION)
+    return CurriculumVitae.builder().name(NAME).timeStart(TIME_START).timeEnd(TIME_END)
+        .description(DESCRIPTION)
         .build();
   }
 
   private CurriculumVitaeCommandRequest generateCurriculumVitaeCommandRequest() {
-    return CurriculumVitaeCommandRequest.builder().name(NAME).start(START).end(END)
+    return CurriculumVitaeCommandRequest.builder().name(NAME).timeStart(TIME_START).timeEnd(
+        TIME_END)
         .description(DESCRIPTION).build();
   }
 }

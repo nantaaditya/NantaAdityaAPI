@@ -66,8 +66,8 @@ public class CurriculumVitaeControllerTest {
   private EmptyResponse emptyResponse;
   private static final String ID = "id";
   private static final String NAME = "name";
-  private static final String START = "start";
-  private static final String END = "end";
+  private static final String TIME_START = "time start";
+  private static final String TIME_END = "time end";
   private static final String DESCRIPTION = "description";
   private static final String REQUEST_ID = UUID.randomUUID().toString();
   private static final String SAVE_SUCCESS_MESSAGE = "save curriculum vitae success";
@@ -180,7 +180,7 @@ public class CurriculumVitaeControllerTest {
   }
 
   private CurriculumVitaeWebRequest generateCurriculumVitaeWebRequest() {
-    return CurriculumVitaeWebRequest.builder().name(NAME).start(START).end(END)
+    return CurriculumVitaeWebRequest.builder().name(NAME).timeStart(TIME_START).timeEnd(TIME_END)
         .description(DESCRIPTION).build();
   }
 
@@ -189,7 +189,7 @@ public class CurriculumVitaeControllerTest {
   }
 
   private CurriculumVitaeWebResponse generateCurriculumVitaeWebResponse() {
-    return CurriculumVitaeWebResponse.builder().name(NAME).start(START).end(END)
+    return CurriculumVitaeWebResponse.builder().name(NAME).timeStart(TIME_START).timeEnd(TIME_END)
         .description(DESCRIPTION).build();
   }
 

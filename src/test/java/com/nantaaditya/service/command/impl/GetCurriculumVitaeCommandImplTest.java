@@ -45,8 +45,8 @@ public class GetCurriculumVitaeCommandImplTest {
   private List<CurriculumVitae> curriculumVitaes;
   private List<CurriculumVitaeWebResponse> curriculumVitaeWebResponses;
   private static final String NAME = "name";
-  private static final String START = "start";
-  private static final String END = "end";
+  private static final String TIME_START = "time start";
+  private static final String TIME_END = "time end";
   private static final String DESCRIPTION = "description";
 
   @Before
@@ -84,8 +84,8 @@ public class GetCurriculumVitaeCommandImplTest {
   private void assertResponse(List<CurriculumVitaeWebResponse> responses) {
     CurriculumVitaeWebResponse result = responses.get(0);
     assertEquals(NAME, result.getName());
-    assertEquals(START, result.getStart());
-    assertEquals(END, result.getEnd());
+    assertEquals(TIME_START, result.getTimeStart());
+    assertEquals(TIME_END, result.getTimeEnd());
     assertEquals(DESCRIPTION, result.getDescription());
   }
 
@@ -103,12 +103,13 @@ public class GetCurriculumVitaeCommandImplTest {
   }
 
   private CurriculumVitae generateCurriculumVitae() {
-    return CurriculumVitae.builder().name(NAME).start(START).end(END).description(DESCRIPTION)
+    return CurriculumVitae.builder().name(NAME).timeStart(TIME_START).timeEnd(TIME_END)
+        .description(DESCRIPTION)
         .build();
   }
 
   private CurriculumVitaeWebResponse generateCurriculumVitaeWebResponse() {
-    return CurriculumVitaeWebResponse.builder().name(NAME).start(START).end(END)
+    return CurriculumVitaeWebResponse.builder().name(NAME).timeStart(TIME_START).timeEnd(TIME_END)
         .description(DESCRIPTION).build();
   }
 
