@@ -24,4 +24,9 @@ public class ControllerHelper {
     T response = serviceExecutor.execute(command, request);
     return ResponseHelper.ok(requestId, message, response);
   }
+
+  public <T, R> T response(Class<? extends Command<T, R>> command,
+      R request) {
+    return serviceExecutor.execute(command, request);
+  }
 }
