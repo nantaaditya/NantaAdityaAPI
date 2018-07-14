@@ -9,6 +9,7 @@ import com.nantaaditya.service.command.AbstractCommand;
 import com.nantaaditya.service.command.SaveAboutMeCommand;
 import javax.persistence.EntityExistsException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 // @formatter:off
 /**
@@ -18,6 +19,7 @@ import org.springframework.transaction.annotation.Transactional;
   **/
 // @formatter:on
 
+@Service
 public class SaveAboutMeCommandImpl extends
     AbstractCommand<EmptyResponse, AboutMeCommandRequest> implements
     SaveAboutMeCommand {

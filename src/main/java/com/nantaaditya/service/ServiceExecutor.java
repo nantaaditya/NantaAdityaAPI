@@ -1,6 +1,5 @@
 package com.nantaaditya.service;
 
-import com.nantaaditya.model.command.CommandRequest;
 import com.nantaaditya.service.command.Command;
 
 // @formatter:off
@@ -13,7 +12,7 @@ import com.nantaaditya.service.command.Command;
 
 public interface ServiceExecutor {
 
-  <T, R extends CommandRequest> T execute(Class<? extends Command<T, R>> commandClass,
+  <T, R> T execute(Class<? extends Command<T, R>> commandClass,
       R request);
 
 }

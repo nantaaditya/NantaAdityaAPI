@@ -8,7 +8,6 @@ package com.nantaaditya.helper.impl;
 // @formatter:on
 
 import com.nantaaditya.model.Response;
-import com.nantaaditya.model.command.CommandRequest;
 import com.nantaaditya.service.ServiceExecutor;
 import com.nantaaditya.service.command.Command;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,7 +19,7 @@ public class ControllerHelper {
   @Autowired
   private ServiceExecutor serviceExecutor;
 
-  public <T, R extends CommandRequest> Response<T> response(Class<? extends Command<T, R>> command,
+  public <T, R> Response<T> response(Class<? extends Command<T, R>> command,
       R request, String requestId, String message) {
     T response = serviceExecutor.execute(command, request);
     return ResponseHelper.ok(requestId, message, response);

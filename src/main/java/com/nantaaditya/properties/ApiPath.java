@@ -17,7 +17,7 @@ public interface ApiPath {
   String STATIC = "/static";
 
   String ABOUT_ME = API + "/about-me";
-  String EDUCATION = API + "/education";
+  String CURRICULUM_VITAE = API + "/curriculum-vitae";
   String SKILL = API + "/skill";
   String PROJECT = API + "/project";
   String PICTURE = API + "/picture";

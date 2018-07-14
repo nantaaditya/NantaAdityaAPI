@@ -58,7 +58,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
             "/swagger-ui*", "/webjars/springfox-swagger-ui/**", "/swagger-resources/**",
             "/configuration/**", "/v2/api-docs", "favicon.ico", "/WEB-INF/jsp/**", "/css/**",
             "/js/**", "/img/**")
-        .antMatchers(HttpMethod.GET, ApiPath.EDUCATION)
+        .antMatchers(HttpMethod.GET, ApiPath.CURRICULUM_VITAE)
         .antMatchers(HttpMethod.GET, ApiPath.ABOUT_ME)
         .antMatchers(HttpMethod.GET, ApiPath.SKILL)
         .antMatchers(HttpMethod.GET, ApiPath.PROJECT)
