@@ -3,7 +3,6 @@ package com.nantaaditya.helper.impl;
 import com.nantaaditya.model.Response;
 import java.util.Map;
 import org.springframework.http.HttpStatus;
-import org.springframework.util.Assert;
 
 // @formatter:off
 /**
@@ -16,7 +15,6 @@ import org.springframework.util.Assert;
 public class ResponseHelper {
 
   public static <T> Response<T> ok(String requestId, String message, T data) {
-    Assert.notNull(data, "Data must not null");
     return ResponseHelper.status(HttpStatus.OK, true, requestId, message, data);
   }
 
