@@ -1,5 +1,5 @@
 package com.nantaaditya.service.command.impl;
-// @formatter:off
+
 import static org.mockito.Mockito.*;
 
 import com.nantaaditya.entity.Skill;
@@ -13,7 +13,9 @@ import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.springframework.test.context.junit4.SpringRunner; /**
+import org.springframework.test.context.junit4.SpringRunner;
+// @formatter:off
+/**
   * Author : Pramuditya Ananta Nur
   * www.nantaaditya.com
   * personal@nantaaditya.com
