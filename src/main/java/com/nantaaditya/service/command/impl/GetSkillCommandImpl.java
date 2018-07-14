@@ -7,7 +7,9 @@ import com.nantaaditya.model.command.GetSkillCommandResponse;
 import com.nantaaditya.repository.SkillRepository;
 import com.nantaaditya.service.command.AbstractCommand;
 import com.nantaaditya.service.command.GetSkillCommand;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 // @formatter:off
@@ -31,7 +33,7 @@ public class GetSkillCommandImpl extends
 
   @Override
   public List<GetSkillCommandResponse> doExecute(EmptyRequest emptyRequest) {
-    return this.toResponse(this.get());
+    return Optional.ofNullable(this.toResponse(this.get())).orElse(new ArrayList<>());
   }
 
   private List<GetSkillCommandResponse> toResponse(List<Skill> skills) {

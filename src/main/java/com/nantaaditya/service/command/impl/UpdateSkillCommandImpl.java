@@ -1,7 +1,6 @@
 package com.nantaaditya.service.command.impl;
 
 import com.nantaaditya.entity.Skill;
-import com.nantaaditya.helper.MapperHelper;
 import com.nantaaditya.model.EmptyResponse;
 import com.nantaaditya.model.command.UpdateSkillCommandRequest;
 import com.nantaaditya.repository.SkillRepository;
@@ -9,6 +8,7 @@ import com.nantaaditya.service.command.AbstractCommand;
 import com.nantaaditya.service.command.UpdateSkillCommand;
 import java.util.Optional;
 import javax.persistence.EntityNotFoundException;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 // @formatter:off
@@ -27,13 +27,10 @@ public class UpdateSkillCommandImpl extends
   @Autowired
   private SkillRepository skillRepository;
 
-  @Autowired
-  private MapperHelper mapperHelper;
-
   @Override
   public EmptyResponse doExecute(UpdateSkillCommandRequest request) {
     Optional.ofNullable(findById(request.getId()))
-        .map(skill -> this.save(this.toEntity(request)))
+        .map(skill -> this.save(this.toEntity(request, skill)))
         .orElseThrow(() -> new EntityNotFoundException("Skill not found"));
     return EmptyResponse.getInstance();
   }
@@ -46,7 +43,8 @@ public class UpdateSkillCommandImpl extends
     return skillRepository.save(skill);
   }
 
-  private Skill toEntity(UpdateSkillCommandRequest request) {
-    return mapperHelper.map(request, Skill.class);
+  private Skill toEntity(UpdateSkillCommandRequest request, Skill skill) {
+    BeanUtils.copyProperties(request, skill);
+    return skill;
   }
 }
