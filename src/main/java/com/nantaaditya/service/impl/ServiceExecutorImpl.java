@@ -1,6 +1,5 @@
 package com.nantaaditya.service.impl;
 
-import com.nantaaditya.model.command.CommandRequest;
 import com.nantaaditya.service.ServiceExecutor;
 import com.nantaaditya.service.command.Command;
 import org.springframework.beans.BeansException;
@@ -26,7 +25,7 @@ public class ServiceExecutorImpl implements ServiceExecutor, ApplicationContextA
   }
 
   @Override
-  public <T, R extends CommandRequest> T execute(
+  public <T, R> T execute(
       Class<? extends Command<T, R>> commandClass,
       R request) {
     try {
