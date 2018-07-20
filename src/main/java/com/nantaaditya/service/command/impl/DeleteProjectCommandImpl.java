@@ -9,6 +9,7 @@ import com.nantaaditya.service.command.DeleteProjectCommand;
 import java.util.Optional;
 import javax.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 // @formatter:off
 /**
   * Author : Pramuditya Ananta Nur
@@ -17,6 +18,7 @@ import org.springframework.beans.factory.annotation.Autowired;
   **/
 // @formatter:on
 
+@Service
 public class DeleteProjectCommandImpl extends AbstractCommand<EmptyResponse, String> implements
     DeleteProjectCommand {
 
