@@ -8,6 +8,7 @@ import com.nantaaditya.model.exception.UnauthorizedException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import javax.persistence.EntityNotFoundException;
 import javax.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -88,6 +89,16 @@ public class RestExceptionHandler {
     log.error("{} Exception, caused by {}", e.getMessage(), e.getCause());
     return ResponseHelper
         .error(HttpStatus.NOT_ACCEPTABLE, request.getParameter("requestId"), e.getMessage());
+  }
+
+  @ResponseBody
+  @ResponseStatus(HttpStatus.NOT_FOUND)
+  @ExceptionHandler(EntityNotFoundException.class)
+  public Response handleEntityNotFoundException(EntityNotFoundException e,
+      HttpServletRequest request) {
+    log.error("{} Exception, caused by {}", e.getMessage(), e.getCause());
+    return ResponseHelper
+        .error(HttpStatus.NOT_FOUND, request.getParameter("requestId"), e.getMessage());
   }
 
   @ResponseBody
