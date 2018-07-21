@@ -10,6 +10,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.nantaaditya.RestExceptionHandler;
+import com.nantaaditya.helper.MapperHelper;
 import com.nantaaditya.helper.impl.ControllerHelper;
 import com.nantaaditya.helper.impl.ResponseHelper;
 import com.nantaaditya.model.EmptyRequest;
@@ -17,6 +18,7 @@ import com.nantaaditya.model.EmptyResponse;
 import com.nantaaditya.model.command.GetSkillCommandResponse;
 import com.nantaaditya.model.command.SaveSkillCommandRequest;
 import com.nantaaditya.model.command.UpdateSkillCommandRequest;
+import com.nantaaditya.model.web.GetSkillWebResponse;
 import com.nantaaditya.model.web.SaveSkillWebRequest;
 import com.nantaaditya.model.web.UpdateSkillWebRequest;
 import com.nantaaditya.properties.ApiPath;
@@ -59,6 +61,9 @@ public class SkillControllerTest {
 
   @Mock
   private RestExceptionHandler exceptionHandler;
+
+  @Mock
+  private MapperHelper mapperHelper;
 
   private MockMvc mockMvc;
   private ObjectMapper mapper;
@@ -118,10 +123,12 @@ public class SkillControllerTest {
 
   @Test
   public void testGet() throws Exception {
+    this.mockConvertResponse();
     this.mockGet();
     mockMvc.perform(get(ApiPath.SKILL)
         .param("requestId", REQUEST_ID))
         .andExpect(status().isOk());
+    this.verifyConvertResponse();
     this.verifyGet();
   }
 
@@ -137,6 +144,7 @@ public class SkillControllerTest {
   @After
   public void tearDown() {
     verifyNoMoreInteractions(helper);
+    verifyNoMoreInteractions(mapperHelper);
   }
 
 
@@ -162,6 +170,11 @@ public class SkillControllerTest {
         .thenReturn(ResponseHelper.ok(REQUEST_ID, DELETE_MESSAGE, emptyResponse));
   }
 
+  private void mockConvertResponse() {
+    when(mapperHelper.mapToList(getSkillCommandResponses, GetSkillWebResponse.class))
+        .thenReturn(Arrays.asList(GetSkillWebResponse.builder().build()));
+  }
+
   private void verifySave() {
     verify(this.helper).response(SaveSkillCommand.class, convertSaveSkillCommandRequest(
         saveSkillWebRequest, new SaveSkillCommandRequest()), REQUEST_ID, SAVE_MESSAGE);
@@ -178,6 +191,10 @@ public class SkillControllerTest {
 
   private void verifyDelete() {
     verify(this.helper).response(DeleteSkillCommand.class, ID, REQUEST_ID, DELETE_MESSAGE);
+  }
+
+  private void verifyConvertResponse() {
+    verify(mapperHelper).mapToList(getSkillCommandResponses, GetSkillWebResponse.class);
   }
 
   private SaveSkillCommandRequest convertSaveSkillCommandRequest(
