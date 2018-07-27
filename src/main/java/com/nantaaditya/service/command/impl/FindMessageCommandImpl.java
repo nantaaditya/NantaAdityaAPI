@@ -42,7 +42,8 @@ public class FindMessageCommandImpl extends
   }
 
   private Message changeState(Message message) {
-    message.setState(MessageStateEnum.READ);
+    if(message.getState().equals(MessageStateEnum.UNREAD))
+      message.setState(MessageStateEnum.READ);
     return message;
   }
 
