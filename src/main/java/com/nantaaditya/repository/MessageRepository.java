@@ -13,5 +13,5 @@ import org.springframework.stereotype.Repository;
 // @formatter:on
 @Repository
 public interface MessageRepository extends JpaRepository<Message, String> {
-  List<Message> findAllOrderByStateDesc();
+  List<Message> findAllByOrderByStateDesc();
 }
