@@ -66,7 +66,7 @@ public class GetMessageCommandImplTest {
   }
 
   private void mockGet() {
-    when(repository.findAllOrderByStateDesc())
+    when(repository.findAllByOrderByStateDesc())
         .thenReturn(Arrays.asList(message));
   }
 
@@ -77,7 +77,7 @@ public class GetMessageCommandImplTest {
   }
 
   private void verifyGet() {
-    verify(repository).findAllOrderByStateDesc();
+    verify(repository).findAllByOrderByStateDesc();
   }
 
   private void verifyToResponse() {

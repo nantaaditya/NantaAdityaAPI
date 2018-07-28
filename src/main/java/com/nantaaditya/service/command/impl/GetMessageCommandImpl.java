@@ -35,7 +35,7 @@ public class GetMessageCommandImpl extends
   }
 
   private List<Message> get() {
-    return messageRepository.findAllOrderByStateDesc();
+    return messageRepository.findAllByOrderByStateDesc();
   }
 
   private List<GetMessageCommandResponse> toResponse(List<Message> messages) {
