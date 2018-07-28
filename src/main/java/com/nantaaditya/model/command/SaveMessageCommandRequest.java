@@ -1,7 +1,6 @@
 package com.nantaaditya.model.command;
 
 import com.nantaaditya.enumerated.MessageStateEnum;
-import javax.persistence.Entity;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -14,7 +13,6 @@ import lombok.NoArgsConstructor;
   **/
 // @formatter:on
 @Data
-@Entity
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
