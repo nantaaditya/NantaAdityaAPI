@@ -23,4 +23,16 @@ public class DataSourceProperties {
   private String captchaServerKey;
   @Value("${application.base.url}")
   private String baseUrl;
+  @Value("${MAIL_HOST}")
+  private String mailHost;
+  @Value("${MAIL_PORT}")
+  private String mailPort;
+  @Value("${MAIL_PROTOCOl}")
+  private String mailProtocol;
+  @Value("${MAIL_USERNAME}")
+  private String mailUsername;
+  @Value("${MAIL_PASSWORD}")
+  private String mailPassword;
+  @Value("${MAIL_CC}")
+  private String mailCC;
 }
