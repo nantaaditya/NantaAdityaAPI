@@ -24,7 +24,13 @@ public class AbstractController {
     return target;
   }
 
-  protected <COMMAND extends Collection, WEB> List<WEB> convertResponse(COMMAND source, Class<?> target){
+  protected <COMMAND, WEB> WEB convertResponse(COMMAND source, WEB target) {
+    BeanUtils.copyProperties(source, target);
+    return target;
+  }
+
+  protected <COMMAND extends Collection, WEB> List<WEB> convertResponse(COMMAND source,
+      Class<?> target) {
     return mapperHelper.mapToList(source, target);
   }
 }

@@ -21,7 +21,7 @@ public interface ApiPath {
   String SKILL = API + "/skill";
   String PROJECT = API + "/project";
   String PICTURE = API + "/picture";
-  String CONTACT = API + "/contact";
+  String MESSAGE = API + "/message";
   String BLOG = API + "/blog";
 
 }

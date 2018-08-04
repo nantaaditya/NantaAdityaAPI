@@ -1,8 +1,8 @@
-# My Personal Website Project
+# Nanta Aditya's website API
 ![Nanta Aditya's Web](https://preview.ibb.co/iHvpQT/indaka_thumbnail.png)
 
 ## About
-My personal website project.
+Nanta Aditya's website API.
 
 ## Contact Me :
 
