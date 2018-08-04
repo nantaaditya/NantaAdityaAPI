@@ -63,7 +63,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         .antMatchers(HttpMethod.GET, ApiPath.SKILL)
         .antMatchers(HttpMethod.GET, ApiPath.PROJECT)
         .antMatchers(HttpMethod.GET, ApiPath.PICTURE + "/*")
-        .antMatchers(HttpMethod.POST, ApiPath.CONTACT)
+        .antMatchers(HttpMethod.POST, ApiPath.MESSAGE)
         .antMatchers(HttpMethod.GET, ApiPath.BLOG)
         .antMatchers(HttpMethod.GET, ApiPath.BLOG + "/*");
   }
