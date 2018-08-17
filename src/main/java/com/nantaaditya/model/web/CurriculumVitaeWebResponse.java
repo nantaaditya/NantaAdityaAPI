@@ -18,6 +18,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class CurriculumVitaeWebResponse{
 
+  private String id;
   private String name;
   private String timeStart;
   private String timeEnd;
