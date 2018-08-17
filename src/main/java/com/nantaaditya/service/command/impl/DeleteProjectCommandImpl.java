@@ -9,6 +9,7 @@ import com.nantaaditya.service.command.DeleteProjectCommand;
 import java.util.Optional;
 import javax.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 // @formatter:off
 /**
@@ -27,6 +28,9 @@ public class DeleteProjectCommandImpl extends AbstractCommand<EmptyResponse, Str
 
   @Autowired
   private FileHelper fileHelper;
+
+  @Value("${nanta.resource.host}")
+  private String IMAGE_HOST;
 
   @Override
   public EmptyResponse doExecute(String id) {
@@ -48,7 +52,7 @@ public class DeleteProjectCommandImpl extends AbstractCommand<EmptyResponse, Str
   private void deleteFile(String path) {
     this.fileHelper
         .deleteFile(this.fileHelper.getRootFilePath().concat(
-            path.replace("/resource", "")));
+            path.replace(IMAGE_HOST.concat("/resource"), "")));
   }
 
 }

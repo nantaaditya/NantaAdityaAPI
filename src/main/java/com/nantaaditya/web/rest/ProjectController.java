@@ -49,7 +49,7 @@ public class ProjectController extends AbstractController {
   @Autowired
   private ObjectMapper objectMapper;
 
-  @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE,
+  @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE,
       produces = MediaType.APPLICATION_JSON_VALUE)
   public Response<EmptyResponse> save(@RequestParam String requestId, @RequestPart
       String request, @RequestPart MultipartFile file) {

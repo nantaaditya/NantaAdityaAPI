@@ -22,6 +22,9 @@ public class FileUtilsImpl implements FileUtils {
   @Value("${nanta.file.path}")
   private String filePath;
 
+  @Value("${nanta.resource.host}")
+  private String IMAGE_HOST;
+
   @Override
   public boolean isValidContentType(List<String> allowedFileType, String contentType) {
     return allowedFileType.contains(contentType) ? true : false;
@@ -66,7 +69,8 @@ public class FileUtilsImpl implements FileUtils {
   public String generateFileURI(MultipartFile file, String name) {
     String fileExtension = this.getFileExtension(file);
     name = name.replace(" ", "-");
-    return FileProperties.RESOURCE_WEB_PATH.concat(name)
+    return IMAGE_HOST
+        .concat(FileProperties.RESOURCE_WEB_PATH)
         .concat(name)
         .concat(FileProperties.IMG_POSTFIX)
         .concat(fileExtension);
