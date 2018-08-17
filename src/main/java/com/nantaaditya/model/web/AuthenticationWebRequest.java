@@ -24,4 +24,6 @@ public class AuthenticationWebRequest implements WebRequest {
   private String username;
   @NotBlank(message = "password is required")
   private String password;
+  @NotBlank(message = "please verify you're human")
+  private String captchaResponse;
 }

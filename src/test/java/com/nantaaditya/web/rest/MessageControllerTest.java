@@ -11,6 +11,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.nantaaditya.RestExceptionHandler;
 import com.nantaaditya.enumerated.MessageStateEnum;
+import com.nantaaditya.helper.GoogleRecaptchaHelper;
 import com.nantaaditya.helper.MapperHelper;
 import com.nantaaditya.helper.impl.ControllerHelper;
 import com.nantaaditya.helper.impl.ResponseHelper;
@@ -20,6 +21,7 @@ import com.nantaaditya.model.command.GetMessageCommandResponse;
 import com.nantaaditya.model.command.ReplyMessageCommandRequest;
 import com.nantaaditya.model.command.SaveMessageCommandRequest;
 import com.nantaaditya.model.web.GetMessageWebResponse;
+import com.nantaaditya.model.web.GoogleCaptchaWebResponse;
 import com.nantaaditya.model.web.ReplyMessageWebRequest;
 import com.nantaaditya.model.web.SaveMessageWebRequest;
 import com.nantaaditya.properties.ApiPath;
@@ -59,6 +61,9 @@ public class MessageControllerTest {
   private ControllerHelper helper;
 
   @Mock
+  private GoogleRecaptchaHelper googleRecaptchaHelper;
+
+  @Mock
   private RestExceptionHandler exceptionHandler;
 
   @Mock
@@ -83,6 +88,7 @@ public class MessageControllerTest {
   private static final String EMAIL = "mine@mail.com";
   private static final String MESSAGE = "message";
   private static final String SUBJECT = "subject";
+  private static final String CAPTCHA = UUID.randomUUID().toString();
   private static final MessageStateEnum STATE = MessageStateEnum.UNREAD;
 
 
@@ -103,13 +109,27 @@ public class MessageControllerTest {
   @Test
   public void testSave() throws Exception {
     saveMessageWebRequest = generateSaveMessageWebRequest();
+    this.mockValidateCaptcha(this.generateGoogleCaptchaWebResponse(true));
     this.mockSave();
     mockMvc.perform(post(ApiPath.MESSAGE)
         .param("requestId", REQUEST_ID)
         .content(mapper.writeValueAsString(saveMessageWebRequest))
         .contentType(MediaType.APPLICATION_JSON_VALUE))
         .andExpect(status().isOk());
+    this.verifyValidateCaptcha();
     this.verifySave();
+  }
+
+  @Test
+  public void testSaveFailed() throws Exception {
+    saveMessageWebRequest = generateSaveMessageWebRequest();
+    this.mockValidateCaptcha(this.generateGoogleCaptchaWebResponse(false));
+    mockMvc.perform(post(ApiPath.MESSAGE)
+        .param("requestId", REQUEST_ID)
+        .content(mapper.writeValueAsString(saveMessageWebRequest))
+        .contentType(MediaType.APPLICATION_JSON_VALUE))
+        .andExpect(status().isOk());
+    this.verifyValidateCaptcha();
   }
 
   @Test
@@ -153,6 +173,16 @@ public class MessageControllerTest {
   public void tearDown() {
     verifyNoMoreInteractions(helper);
     verifyNoMoreInteractions(mapperHelper);
+    verifyNoMoreInteractions(googleRecaptchaHelper);
+  }
+
+  private void mockValidateCaptcha(GoogleCaptchaWebResponse response){
+    when(googleRecaptchaHelper.validateCaptcha(anyString()))
+        .thenReturn(response);
+  }
+
+  private void verifyValidateCaptcha(){
+    verify(googleRecaptchaHelper).validateCaptcha(anyString());
   }
 
   private void mockSave() {
@@ -222,6 +252,7 @@ public class MessageControllerTest {
         .email(EMAIL)
         .message(MESSAGE)
         .name(NAME)
+        .captchaResponse(CAPTCHA)
         .build();
   }
 
@@ -264,5 +295,11 @@ public class MessageControllerTest {
       ReplyMessageWebRequest webRequest, ReplyMessageCommandRequest commandRequest) {
     BeanUtils.copyProperties(webRequest, commandRequest);
     return commandRequest;
+  }
+
+  private GoogleCaptchaWebResponse generateGoogleCaptchaWebResponse(Boolean result){
+    return GoogleCaptchaWebResponse.builder()
+        .success(result)
+        .build();
   }
 }

@@ -26,4 +26,6 @@ public class SaveMessageWebRequest {
   private String email;
   @NotBlank(message = "message is required")
   private String message;
+  @NotBlank(message = "please verify you're human")
+  private String captchaResponse;
 }
