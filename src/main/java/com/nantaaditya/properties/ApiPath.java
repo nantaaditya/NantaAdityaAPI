@@ -14,14 +14,13 @@ public interface ApiPath {
   String LOGIN = API + "/login";
   String LOGOUT = API + "/logout";
   String CHANGE_PASSWORD = API + "/change-password";
-  String STATIC = "/static";
 
-  String ABOUT_ME = API + "/about-me";
-  String CURRICULUM_VITAE = API + "/curriculum-vitae";
+  String BLOG = API + "/blog";
+  String POST = API + "/post";
   String SKILL = API + "/skill";
   String PROJECT = API + "/project";
-  String PICTURE = API + "/picture";
   String MESSAGE = API + "/message";
-  String BLOG = API + "/blog";
+  String ABOUT_ME = API + "/about-me";
+  String CURRICULUM_VITAE = API + "/curriculum-vitae";
 
 }
