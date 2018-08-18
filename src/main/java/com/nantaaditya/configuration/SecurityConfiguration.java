@@ -52,20 +52,20 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
   @Override
   public void configure(WebSecurity web) throws Exception {
     web.ignoring()
-        .antMatchers("/", "/home", "/login", "/gallery", "/blog", "/blog/*", "/about",
-            "/sitemap.xml",
-            "/administrator/*", "/resource/**", "/static/**", "/api/login", "/api/project",
+        .antMatchers("/", "/resource/**", "/static/**",
             "/swagger-ui*", "/webjars/springfox-swagger-ui/**", "/swagger-resources/**",
             "/configuration/**", "/v2/api-docs", "favicon.ico", "/WEB-INF/jsp/**", "/css/**",
             "/js/**", "/img/**")
-        .antMatchers(HttpMethod.GET, ApiPath.CURRICULUM_VITAE)
-        .antMatchers(HttpMethod.GET, ApiPath.ABOUT_ME)
-        .antMatchers(HttpMethod.GET, ApiPath.SKILL)
-        .antMatchers(HttpMethod.GET, ApiPath.PROJECT)
-        .antMatchers(HttpMethod.GET, ApiPath.PICTURE + "/*")
+        .antMatchers(HttpMethod.POST, ApiPath.LOGIN)
         .antMatchers(HttpMethod.POST, ApiPath.MESSAGE)
         .antMatchers(HttpMethod.GET, ApiPath.BLOG)
-        .antMatchers(HttpMethod.GET, ApiPath.BLOG + "/*");
+        .antMatchers(HttpMethod.GET, ApiPath.SKILL)
+        .antMatchers(HttpMethod.GET, ApiPath.PROJECT)
+        .antMatchers(HttpMethod.GET, ApiPath.ABOUT_ME)
+        .antMatchers(HttpMethod.GET, ApiPath.BLOG)
+        .antMatchers(HttpMethod.GET, ApiPath.CURRICULUM_VITAE)
+        .antMatchers(HttpMethod.GET, ApiPath.POST+ "/*")
+        .antMatchers(HttpMethod.OPTIONS, ApiPath.API+"/**");
   }
 
   @Override
