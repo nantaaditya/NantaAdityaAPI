@@ -1,5 +1,6 @@
 package com.nantaaditya.web.rest;
 
+import com.nantaaditya.helper.GoogleRecaptchaHelper;
 import com.nantaaditya.helper.impl.ControllerHelper;
 import com.nantaaditya.helper.impl.ResponseHelper;
 import com.nantaaditya.model.EmptyRequest;
@@ -9,6 +10,7 @@ import com.nantaaditya.model.command.GetMessageCommandResponse;
 import com.nantaaditya.model.command.ReplyMessageCommandRequest;
 import com.nantaaditya.model.command.SaveMessageCommandRequest;
 import com.nantaaditya.model.web.GetMessageWebResponse;
+import com.nantaaditya.model.web.GoogleCaptchaWebResponse;
 import com.nantaaditya.model.web.ReplyMessageWebRequest;
 import com.nantaaditya.model.web.SaveMessageWebRequest;
 import com.nantaaditya.properties.ApiPath;
@@ -21,6 +23,7 @@ import java.util.List;
 import javax.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -46,14 +49,25 @@ public class MessageController extends AbstractController {
   @Autowired
   private ControllerHelper controllerHelper;
 
+  @Autowired
+  private GoogleRecaptchaHelper googleRecaptchaHelper;
+
   @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE,
       produces = MediaType.APPLICATION_JSON_VALUE)
   public Response<EmptyResponse> save(@RequestParam String requestId, @Valid @RequestBody
       SaveMessageWebRequest webRequest) {
 
-    return controllerHelper.response(SaveMessageCommand.class,
-        convertRequest(webRequest, new SaveMessageCommandRequest()),
-        requestId, "your message has been sent");
+    GoogleCaptchaWebResponse response = googleRecaptchaHelper
+        .validateCaptcha(webRequest.getCaptchaResponse());
+
+    if(response.getSuccess()) {
+      return controllerHelper.response(SaveMessageCommand.class,
+          convertRequest(webRequest, new SaveMessageCommandRequest()),
+          requestId, "your message has been sent");
+    } else {
+      return ResponseHelper.status(HttpStatus.BAD_REQUEST, false, requestId,
+          "please verify you're human", null);
+    }
   }
 
   @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
