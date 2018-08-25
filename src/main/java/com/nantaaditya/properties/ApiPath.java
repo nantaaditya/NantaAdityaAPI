@@ -17,6 +17,7 @@ public interface ApiPath {
 
   String BLOG = API + "/blog";
   String POST = API + "/post";
+  String IMAGE = API + "/image";
   String SKILL = API + "/skill";
   String PROJECT = API + "/project";
   String MESSAGE = API + "/message";
