@@ -23,7 +23,7 @@ import lombok.NoArgsConstructor;
 @Table(name = "N_PROJECT")
 public class Project extends AbstractEntity {
 
-  private String image;
+  private String imageURL;
   private String name;
   private String url;
 }
