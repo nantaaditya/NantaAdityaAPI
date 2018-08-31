@@ -4,7 +4,6 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.web.multipart.MultipartFile;
 // @formatter:off
 /**
   * Author : Pramuditya Ananta Nur
@@ -19,8 +18,7 @@ import org.springframework.web.multipart.MultipartFile;
 @AllArgsConstructor
 public class SaveProjectCommandRequest implements CommandRequest {
 
-  private MultipartFile file;
-  private String image;
-  private String name;
   private String url;
+  private String name;
+  private String imageURL;
 }

@@ -23,4 +23,6 @@ public class SaveProjectWebRequest implements WebRequest {
   private String name;
   @NotBlank(message = "url is required")
   private String url;
+  @NotBlank(message = "name is required")
+  private String imageURL;
 }

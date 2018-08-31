@@ -19,7 +19,7 @@ import lombok.NoArgsConstructor;
 public class GetProjectWebResponse {
 
   private String id;
-  private String image;
+  private String imageURL;
   private String name;
   private String url;
 }

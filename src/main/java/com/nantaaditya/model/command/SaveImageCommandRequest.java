@@ -24,6 +24,7 @@ public class SaveImageCommandRequest {
   @NotBlank(message = "name is required")
   private String name;
   private String url;
+  private String imageGroup;
   private int width;
   private int height;
 }
