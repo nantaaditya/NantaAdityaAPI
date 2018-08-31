@@ -3,6 +3,7 @@ package com.nantaaditya.service.command.impl;
 import com.nantaaditya.entity.Project;
 import com.nantaaditya.helper.FileHelper;
 import com.nantaaditya.model.EmptyResponse;
+import com.nantaaditya.repository.ImageRepository;
 import com.nantaaditya.repository.ProjectRepository;
 import com.nantaaditya.service.command.AbstractCommand;
 import com.nantaaditya.service.command.DeleteProjectCommand;
@@ -11,6 +12,7 @@ import javax.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 // @formatter:off
 /**
   * Author : Pramuditya Ananta Nur
@@ -27,17 +29,21 @@ public class DeleteProjectCommandImpl extends AbstractCommand<EmptyResponse, Str
   private ProjectRepository projectRepository;
 
   @Autowired
+  private ImageRepository imageRepository;
+
+  @Autowired
   private FileHelper fileHelper;
 
   @Value("${nanta.resource.host}")
   private String IMAGE_HOST;
 
   @Override
+  @Transactional(rollbackFor = Exception.class)
   public EmptyResponse doExecute(String id) {
     Project project = this.findOne(id);
-    this.deleteFile(project.getImage());
+    this.deleteFile(project.getImageURL());
     this.delete(project);
-    return null;
+    return EmptyResponse.getInstance();
   }
 
   private Project findOne(String id) {
@@ -47,6 +53,7 @@ public class DeleteProjectCommandImpl extends AbstractCommand<EmptyResponse, Str
 
   private void delete(Project project) {
     this.projectRepository.delete(project);
+    this.imageRepository.deleteByUrl(project.getImageURL());
   }
 
   private void deleteFile(String path) {
