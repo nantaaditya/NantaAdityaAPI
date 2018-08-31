@@ -3,6 +3,7 @@ package com.nantaaditya.web.rest;
 import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -22,7 +23,6 @@ import com.nantaaditya.properties.ApiPath;
 import com.nantaaditya.service.command.DeleteProjectCommand;
 import com.nantaaditya.service.command.GetProjectCommand;
 import com.nantaaditya.service.command.SaveProjectCommand;
-import java.io.IOException;
 import java.util.Arrays;
 import java.util.UUID;
 import lombok.extern.slf4j.Slf4j;
@@ -33,8 +33,8 @@ import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.springframework.beans.BeanUtils;
+import org.springframework.http.MediaType;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
-import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
@@ -68,15 +68,13 @@ public class ProjectControllerTest {
 
   private EmptyRequest emptyRequest;
   private EmptyResponse emptyResponse;
-  private String stringRequest;
   private SaveProjectWebRequest webRequest;
   private SaveProjectCommandRequest commandRequest;
   private GetProjectCommandResponse commandResponse;
-  private MockMultipartFile file;
   private static final String ID = "id";
   private static final String URL = "url";
   private static final String NAME = "name";
-  private static final String IMAGE = "image";
+  private static final String IMAGE_URL = "image_url";
   private static final String REQUEST_ID = UUID.randomUUID().toString();
   private static final String SAVE_MESSAGE = "save project success";
   private static final String GET_MESSAGE = "get project success";
@@ -88,11 +86,9 @@ public class ProjectControllerTest {
     this.mapper.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
     this.emptyRequest = generateEmptyRequest();
     this.emptyResponse = generateEmptyResponse();
-    this.stringRequest = generateStringRequest();
     this.webRequest = generateSaveProjectWebRequest();
     this.commandRequest = generaSaveProjectCommandRequest();
     this.commandResponse = generateGetProjectCommandResponse();
-    this.file = generateMockMultipartFile();
     this.mockMvc = MockMvcBuilders
         .standaloneSetup(this.controller)
         .setControllerAdvice(this.exceptionHandler)
@@ -103,7 +99,13 @@ public class ProjectControllerTest {
 
   @Test
   public void testSave() throws Exception {
-    //TODO: test request part??
+    this.mockSave();
+    this.mockMvc.perform(post(ApiPath.PROJECT)
+        .param("requestId", REQUEST_ID)
+        .contentType(MediaType.APPLICATION_JSON_VALUE)
+        .content(mapper.writeValueAsString(webRequest)))
+        .andExpect(status().isOk());
+    this.verifySave();
   }
 
   @Test
@@ -134,7 +136,7 @@ public class ProjectControllerTest {
 
   private void mockSave() {
     when(helper.response(SaveProjectCommand.class,
-        convertSaveProjectCommandRequest(stringRequest, file), REQUEST_ID, SAVE_MESSAGE))
+        convertToCommandRequest(webRequest), REQUEST_ID, SAVE_MESSAGE))
         .thenReturn(ResponseHelper.ok(REQUEST_ID, SAVE_MESSAGE, emptyResponse));
   }
 
@@ -154,14 +156,9 @@ public class ProjectControllerTest {
         .thenReturn(Arrays.asList(GetProjectWebResponse.builder().build()));
   }
 
-  private void mockGenerateCommandRequest() throws IOException {
-    when(mapper.readValue(stringRequest, SaveProjectWebRequest.class))
-        .thenReturn(webRequest);
-  }
-
   private void verifySave() {
-    verify(helper).response(SaveProjectCommand.class, convertSaveProjectCommandRequest(
-        stringRequest, file), REQUEST_ID, SAVE_MESSAGE);
+    verify(helper).response(SaveProjectCommand.class, convertToCommandRequest(webRequest),
+        REQUEST_ID, SAVE_MESSAGE);
   }
 
   private void verifyGet() {
@@ -172,23 +169,13 @@ public class ProjectControllerTest {
     verify(helper).response(DeleteProjectCommand.class, ID, REQUEST_ID, DELETE_MESSAGE);
   }
 
-  private void verifyGenerateCommandRequest() throws IOException {
-    verify(mapper).readValue(stringRequest, SaveProjectWebRequest.class);
-  }
-
   private void verifyConvertResponse() {
     verify(mapperHelper).mapToList(Arrays.asList(commandResponse), GetProjectWebResponse.class);
   }
 
-  private SaveProjectCommandRequest convertSaveProjectCommandRequest(
-      String stringRequest, MockMultipartFile file) {
-    SaveProjectWebRequest webRequest = SaveProjectWebRequest.builder().build();
+  private SaveProjectCommandRequest convertToCommandRequest(
+      SaveProjectWebRequest webRequest) {
     SaveProjectCommandRequest commandRequest = SaveProjectCommandRequest.builder().build();
-    try {
-      webRequest = mapper.readValue(stringRequest, SaveProjectWebRequest.class);
-    } catch (IOException e) {
-      log.error("error converting request to object {}", stringRequest);
-    }
     BeanUtils.copyProperties(webRequest, commandRequest);
     return commandRequest;
   }
@@ -201,18 +188,6 @@ public class ProjectControllerTest {
     return EmptyResponse.getInstance();
   }
 
-  private MockMultipartFile generateMockMultipartFile() {
-    return new MockMultipartFile("file", "boat.jpg",
-        "image/jpeg", "Test Image".getBytes());
-  }
-
-  private String generateStringRequest() throws JsonProcessingException {
-    return "{\n"
-        + "  \"name\": \"name\",\n"
-        + "  \"url\": \"url\"\n"
-        + "}";
-  }
-
   private SaveProjectWebRequest generateSaveProjectWebRequest() {
     return SaveProjectWebRequest.builder()
         .name(NAME)
@@ -222,9 +197,9 @@ public class ProjectControllerTest {
 
   private SaveProjectCommandRequest generaSaveProjectCommandRequest() {
     return SaveProjectCommandRequest.builder()
-        .file(file)
         .name(NAME)
         .url(URL)
+        .imageURL(IMAGE_URL)
         .build();
   }
 
@@ -232,7 +207,7 @@ public class ProjectControllerTest {
     return GetProjectCommandResponse
         .builder()
         .id("id")
-        .image("image")
+        .imageURL(IMAGE_URL)
         .name(NAME)
         .url(URL)
         .build();

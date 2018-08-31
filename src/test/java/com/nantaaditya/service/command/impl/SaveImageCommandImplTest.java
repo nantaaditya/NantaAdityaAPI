@@ -48,8 +48,9 @@ public class SaveImageCommandImplTest {
   private static final String NAME = "name";
   private static final String URL = "url";
   private static final String IMAGE_NAME = "image";
-  private static final String SOURCE_IMAGE = "/resource/web/name.jpg";
-  private static final String SOURCE_THUMBNAIL_IMAGE = "/resource/web/name_thumbnail.jpg";
+  private static final String SOURCE_IMAGE = "/resource/post/name.jpg";
+  private static final String SOURCE_THUMBNAIL_IMAGE = "/resource/post/name_thumbnail.jpg";
+  private static final String IMAGE_GROUP = "/post/";
 
   @Before
   public void setUp(){
@@ -85,12 +86,12 @@ public class SaveImageCommandImplTest {
   }
 
   private void mockUploadFile() throws Exception {
-    when(fileHelper.uploadFile(file, FileProperties.WEB_PATH, NAME))
+    when(fileHelper.uploadFile(file, FileProperties.POST_PATH, NAME))
         .thenReturn(SOURCE_IMAGE);
   }
 
   private void mockGenerateThumbnail() {
-    when(fileUtils.generateThumbnail(file, FileProperties.WEB_PATH, NAME))
+    when(fileUtils.generateThumbnail(file, FileProperties.POST_PATH, NAME))
         .thenReturn(SOURCE_THUMBNAIL_IMAGE);
   }
 
@@ -99,11 +100,11 @@ public class SaveImageCommandImplTest {
   }
 
   private void mockGenerateFileURI() {
-    when(fileUtils.generateFileURI(file, NAME)).thenReturn(IMAGE_NAME);
+    when(fileUtils.generateFileURI(file, IMAGE_GROUP, NAME)).thenReturn(IMAGE_NAME);
   }
 
   private void verifyUploadFile(int time) throws Exception {
-    verify(fileHelper, times(time)).uploadFile(file, FileProperties.WEB_PATH, NAME);
+    verify(fileHelper, times(time)).uploadFile(file, FileProperties.POST_PATH, NAME);
   }
 
   private void verifyResizeImage(int time) throws Exception {
@@ -116,11 +117,11 @@ public class SaveImageCommandImplTest {
   }
 
   private void verifyGenerateThumbnail() {
-    verify(fileUtils).generateThumbnail(file, FileProperties.WEB_PATH, NAME);
+    verify(fileUtils).generateThumbnail(file, FileProperties.POST_PATH, NAME);
   }
 
   private void verifyGenerateFileURI(int time) {
-    verify(fileUtils, times(time)).generateFileURI(file, NAME);
+    verify(fileUtils, times(time)).generateFileURI(file, IMAGE_GROUP, NAME);
   }
 
   private void verifyToEntity(int time) {
@@ -143,6 +144,7 @@ public class SaveImageCommandImplTest {
         .url(URL)
         .width(300)
         .height(300)
+        .imageGroup(IMAGE_GROUP)
         .build();
   }
 
