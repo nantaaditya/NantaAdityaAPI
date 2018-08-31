@@ -66,11 +66,14 @@ public class FileUtilsImpl implements FileUtils {
   }
 
   @Override
-  public String generateFileURI(MultipartFile file, String name) {
+  public String generateFileURI(MultipartFile file, String imageGroup, String name) {
     String fileExtension = this.getFileExtension(file);
     name = name.replace(" ", "-");
+    String groupPath = imageGroup.equals(FileProperties.POST_PATH) ?
+        FileProperties.RESOURCE_POST_PATH : imageGroup.equals((FileProperties.PROJECT_PATH)) ?
+        FileProperties.RESOURCE_PROJECT_PATH : "/resource/other/";
     return IMAGE_HOST
-        .concat(FileProperties.RESOURCE_WEB_PATH)
+        .concat(groupPath)
         .concat(name)
         .concat(FileProperties.IMG_POSTFIX)
         .concat(fileExtension);
