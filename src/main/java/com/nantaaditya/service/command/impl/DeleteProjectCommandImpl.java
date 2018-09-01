@@ -9,10 +9,11 @@ import com.nantaaditya.service.command.AbstractCommand;
 import com.nantaaditya.service.command.DeleteProjectCommand;
 import java.util.Optional;
 import javax.persistence.EntityNotFoundException;
+import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.support.TransactionTemplate;
 // @formatter:off
 /**
   * Author : Pramuditya Ananta Nur
@@ -34,15 +35,18 @@ public class DeleteProjectCommandImpl extends AbstractCommand<EmptyResponse, Str
   @Autowired
   private FileHelper fileHelper;
 
+  @Autowired
+  @Setter
+  private TransactionTemplate transactionTemplate;
+
   @Value("${nanta.resource.host}")
   private String IMAGE_HOST;
 
   @Override
-  @Transactional(rollbackFor = Exception.class)
   public EmptyResponse doExecute(String id) {
     Project project = this.findOne(id);
     this.deleteFile(project.getImageURL());
-    this.delete(project);
+    transactionTemplate.execute(result -> delete(project));
     return EmptyResponse.getInstance();
   }
 
@@ -51,9 +55,10 @@ public class DeleteProjectCommandImpl extends AbstractCommand<EmptyResponse, Str
         .orElseThrow(() -> new EntityNotFoundException("Project not found"));
   }
 
-  private void delete(Project project) {
-    this.projectRepository.delete(project);
-    this.imageRepository.deleteByUrl(project.getImageURL());
+  private Boolean delete(Project project) {
+    imageRepository.deleteByUrl(project.getUrl());
+    projectRepository.delete(project);
+    return true;
   }
 
   private void deleteFile(String path) {
