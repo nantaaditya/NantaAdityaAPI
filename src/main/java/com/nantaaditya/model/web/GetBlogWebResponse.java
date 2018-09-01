@@ -22,4 +22,7 @@ public class GetBlogWebResponse {
   private String titleId;
   private Boolean status;
   private String bannerURL;
+  private String url;
+  private String keywords;
+  private String description;
 }
