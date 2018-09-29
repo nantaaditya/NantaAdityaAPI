@@ -6,7 +6,6 @@ import com.nantaaditya.helper.FileUtils;
 import com.nantaaditya.helper.MapperHelper;
 import com.nantaaditya.model.EmptyResponse;
 import com.nantaaditya.model.command.SaveImageCommandRequest;
-import com.nantaaditya.properties.FileProperties;
 import com.nantaaditya.repository.ImageRepository;
 import com.nantaaditya.service.command.AbstractCommand;
 import com.nantaaditya.service.command.SaveImageCommand;
@@ -42,8 +41,8 @@ public class SaveImageCommandImpl extends
 
   @Override
   public EmptyResponse doExecute(SaveImageCommandRequest request) {
-    String sourceImage = this.uploadFile(request.getFile(), request.getName());
-    String thumbnailImage = this.generateThumbnail(request.getFile(), request.getName());
+    String sourceImage = this.uploadFile(request.getFile(), request.getImageGroup(), request.getName());
+    String thumbnailImage = this.generateThumbnail(request.getFile(), request.getImageGroup(), request.getName());
     log.info("file source {}, \nfile destination {}", sourceImage, thumbnailImage);
 
     try {
@@ -54,15 +53,15 @@ public class SaveImageCommandImpl extends
     }
 
     this.deleteOriginalFile(sourceImage);
-    request.setUrl(this.fileUtils.generateFileURI(request.getFile(), request.getName()));
+    request.setUrl(this.fileUtils.generateFileURI(request.getFile(), request.getImageGroup(), request.getName()));
     this.save(this.toEntity(request));
 
     return EmptyResponse.getInstance();
   }
 
-  private String uploadFile(MultipartFile file, String fileName) {
+  private String uploadFile(MultipartFile file, String imageGroup, String fileName) {
     try {
-      return this.fileHelper.uploadFile(file, FileProperties.WEB_PATH, fileName);
+      return this.fileHelper.uploadFile(file, imageGroup, fileName);
     } catch (Exception e) {
       log.error("error uploading file {}", fileName);
       return null;
@@ -74,8 +73,8 @@ public class SaveImageCommandImpl extends
     log.info("delete file {}", fileName);
   }
 
-  private String generateThumbnail(MultipartFile file, String fileName) {
-    return this.fileUtils.generateThumbnail(file, FileProperties.WEB_PATH, fileName);
+  private String generateThumbnail(MultipartFile file, String imageGroup, String fileName) {
+    return this.fileUtils.generateThumbnail(file, imageGroup, fileName);
   }
 
   private Image toEntity(SaveImageCommandRequest request) {

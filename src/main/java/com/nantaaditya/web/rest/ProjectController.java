@@ -1,6 +1,5 @@
 package com.nantaaditya.web.rest;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.nantaaditya.helper.impl.ControllerHelper;
 import com.nantaaditya.helper.impl.ResponseHelper;
 import com.nantaaditya.model.EmptyRequest;
@@ -15,21 +14,18 @@ import com.nantaaditya.service.command.DeleteProjectCommand;
 import com.nantaaditya.service.command.GetProjectCommand;
 import com.nantaaditya.service.command.SaveProjectCommand;
 import com.nantaaditya.web.AbstractController;
-import java.io.IOException;
 import java.util.List;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.multipart.MultipartFile;
 // @formatter:off
 /**
   * Author : Pramuditya Ananta Nur
@@ -46,16 +42,13 @@ public class ProjectController extends AbstractController {
   @Autowired
   private ControllerHelper controllerHelper;
 
-  @Autowired
-  private ObjectMapper objectMapper;
-
-  @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE,
+  @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE,
       produces = MediaType.APPLICATION_JSON_VALUE)
-  public Response<EmptyResponse> save(@RequestParam String requestId, @RequestPart
-      String request, @RequestPart MultipartFile file) {
-
+  public Response<EmptyResponse> save(@RequestParam String requestId,
+      @RequestBody SaveProjectWebRequest webRequest) {
     return controllerHelper.response(SaveProjectCommand.class,
-        this.generateCommandRequest(request, file), requestId,"save project success");
+        convertRequest(webRequest, new SaveProjectCommandRequest()),
+        requestId,"save project success");
   }
 
   @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
@@ -72,16 +65,4 @@ public class ProjectController extends AbstractController {
         .response(DeleteProjectCommand.class, id, requestId, "delete project success");
   }
 
-  private SaveProjectCommandRequest generateCommandRequest(String request, MultipartFile file) {
-    SaveProjectWebRequest webRequest = SaveProjectWebRequest.builder().build();
-    SaveProjectCommandRequest commandRequest = SaveProjectCommandRequest.builder().build();
-    try {
-      webRequest = objectMapper.readValue(request, SaveProjectWebRequest.class);
-    } catch (IOException e) {
-      log.error("error converting request to object {}", request);
-    }
-    BeanUtils.copyProperties(webRequest, commandRequest);
-    commandRequest.setFile(file);
-    return commandRequest;
-  }
 }

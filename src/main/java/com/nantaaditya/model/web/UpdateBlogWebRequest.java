@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 import org.hibernate.validator.constraints.NotBlank;
 // @formatter:off
 /**
-  * Author : Pramuditya Ananta Nur
+ * Author : Pramuditya Ananta Nur
   * www.nantaaditya.com
   * personal@nantaaditya.com
   **/
@@ -17,12 +17,12 @@ import org.hibernate.validator.constraints.NotBlank;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class SaveProjectWebRequest implements WebRequest {
+public class UpdateBlogWebRequest {
 
-  @NotBlank(message = "name is required")
-  private String name;
-  @NotBlank(message = "url is required")
-  private String url;
-  @NotBlank(message = "name is required")
-  private String imageURL;
+  @NotBlank(message = "title id is required")
+  private String titleId;
+  @NotBlank(message = "banner is required")
+  private String bannerURL;
+  @NotBlank(message = "post is required")
+  private String post;
 }
