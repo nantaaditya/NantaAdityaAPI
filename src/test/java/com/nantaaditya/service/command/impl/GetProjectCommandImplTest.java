@@ -84,7 +84,7 @@ public class GetProjectCommandImplTest {
   private Project generateProject() {
     return Project.builder()
         .name(NAME)
-        .image(IMAGE)
+        .imageURL(IMAGE)
         .url(URL)
         .build();
   }
@@ -92,7 +92,7 @@ public class GetProjectCommandImplTest {
   private GetProjectCommandResponse generateGetProjectCommandResponse() {
     return GetProjectCommandResponse.builder()
         .name(NAME)
-        .image(IMAGE)
+        .imageURL(IMAGE)
         .url(URL)
         .build();
   }

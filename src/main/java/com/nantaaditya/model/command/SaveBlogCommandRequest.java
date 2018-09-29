@@ -5,7 +5,6 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.validator.constraints.NotBlank;
-import org.springframework.web.multipart.MultipartFile;
 // @formatter:off
 /**
  * Author : Pramuditya Ananta Nur
@@ -18,13 +17,14 @@ import org.springframework.web.multipart.MultipartFile;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class SaveImageCommandRequest {
+public class SaveBlogCommandRequest {
 
-  private MultipartFile file;
-  @NotBlank(message = "name is required")
-  private String name;
-  private String url;
-  private String imageGroup;
-  private int width;
-  private int height;
+  @NotBlank(message = "title is required")
+  private String title;
+  @NotBlank(message = "banner is required")
+  private String bannerURL;
+  private String keywords;
+  private String description;
+  @NotBlank(message = "post is required")
+  private String post;
 }

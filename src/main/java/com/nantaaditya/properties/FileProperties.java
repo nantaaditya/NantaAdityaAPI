@@ -13,8 +13,10 @@ import java.util.List;
 public interface FileProperties {
 
   String RESOURCE = "/resource";
-  String WEB_PATH = "/web/";
-  String RESOURCE_WEB_PATH = RESOURCE.concat(WEB_PATH);
+  String POST_PATH = "/post/";
+  String PROJECT_PATH = "/project/";
+  String RESOURCE_POST_PATH = RESOURCE.concat(POST_PATH);
+  String RESOURCE_PROJECT_PATH = RESOURCE.concat(PROJECT_PATH);
   String IMG_POSTFIX = "_thumbnail.";
   List<String> ALLOWED_IMG_FILE_TYPES =
       Arrays.asList("image/jpeg", "image/png", "image/gif");

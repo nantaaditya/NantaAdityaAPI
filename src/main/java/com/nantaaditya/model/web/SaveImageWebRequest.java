@@ -23,6 +23,8 @@ public class SaveImageWebRequest {
 
   @NotBlank(message = "name is required")
   private String name;
+  @NotBlank(message = "image group is required")
+  private String imageGroup;
   @Min(value = 1, message = "minimum 1 px")
   @Max(value = Integer.MAX_VALUE, message = "maximum " + Integer.MAX_VALUE + " px")
   private int width;

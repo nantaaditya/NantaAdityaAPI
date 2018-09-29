@@ -7,6 +7,7 @@ import static org.mockito.Mockito.when;
 
 import com.nantaaditya.entity.Project;
 import com.nantaaditya.helper.FileHelper;
+import com.nantaaditya.repository.ImageRepository;
 import com.nantaaditya.repository.ProjectRepository;
 import org.junit.After;
 import org.junit.Before;
@@ -15,6 +16,7 @@ import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.util.ReflectionTestUtils;
 // @formatter:off
 /**
   * Author : Pramuditya Ananta Nur
@@ -29,7 +31,10 @@ public class DeleteProjectCommandImplTest {
   private DeleteProjectCommandImpl command;
 
   @Mock
-  private ProjectRepository repository;
+  private ProjectRepository projectRepository;
+
+  @Mock
+  private ImageRepository imageRepository;
 
   @Mock
   private FileHelper fileHelper;
@@ -42,6 +47,7 @@ public class DeleteProjectCommandImplTest {
   @Before
   public void setUp(){
     this.project = generateProject();
+    ReflectionTestUtils.setField(command, "IMAGE_HOST", "http://localhost");
   }
 
   @Test
@@ -59,12 +65,12 @@ public class DeleteProjectCommandImplTest {
 
   @After
   public void tearDown(){
-    verifyNoMoreInteractions(repository);
+    verifyNoMoreInteractions(projectRepository);
     verifyNoMoreInteractions(fileHelper);
   }
 
   private void mockFindOne(){
-    when(repository.findOne(anyString())).thenReturn(project);
+    when(projectRepository.findOne(anyString())).thenReturn(project);
   }
 
   private void mockGetRootFilePath(){
@@ -72,11 +78,12 @@ public class DeleteProjectCommandImplTest {
   }
 
   private void verifyFindOne(){
-    verify(repository).findOne(anyString());
+    verify(projectRepository).findOne(anyString());
   }
 
   private void verifyDelete(){
-    verify(repository).delete(project);
+    verify(projectRepository).delete(project);
+    verify(imageRepository).deleteByUrl(anyString());
   }
 
   private void verifyDeleteFile(){
@@ -90,7 +97,7 @@ public class DeleteProjectCommandImplTest {
   private Project generateProject(){
     return Project.builder()
         .url(URL)
-        .image(IMAGE)
+        .imageURL(IMAGE)
         .name(NAME)
         .build();
   }

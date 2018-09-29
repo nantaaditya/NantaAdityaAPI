@@ -50,7 +50,7 @@ public class FileHelperImpl implements FileHelper {
         String filePath = this.setFileAbsolutePath(directory, name, extension);
         File destinationFile = new File(filePath);
         file.transferTo(destinationFile);
-        log.info("File successfully uploadedto {}", filePath);
+        log.info("File successfully uploaded to {}", filePath);
         return destinationFile.getAbsolutePath();
       } else {
         throw new FileUploadBase.FileSizeLimitExceededException("File size must below 2 MB",

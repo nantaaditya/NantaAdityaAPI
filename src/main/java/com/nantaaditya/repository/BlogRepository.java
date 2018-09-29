@@ -1,6 +1,7 @@
 package com.nantaaditya.repository;
 
-import com.nantaaditya.entity.Image;
+import com.nantaaditya.entity.Blog;
+import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 // @formatter:off
@@ -12,7 +13,11 @@ import org.springframework.stereotype.Repository;
 // @formatter:on
 
 @Repository
-public interface ImageRepository extends JpaRepository<Image, String> {
-  Image findByName(String name);
-  void deleteByUrl(String url);
+public interface BlogRepository extends JpaRepository<Blog, String> {
+
+  Blog findByTitleIdAndFlagDeleteFalse(String titleId);
+
+  Blog findByTitleId(String id);
+
+  List<Blog> findByFlagDeleteFalse();
 }

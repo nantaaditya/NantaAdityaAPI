@@ -25,6 +25,6 @@ public interface FileUtils {
 
   public String generateThumbnail(MultipartFile file, String directory, String name);
 
-  public String generateFileURI(MultipartFile file, String name);
+  public String generateFileURI(MultipartFile file, String imageGroup, String name);
 
 }
