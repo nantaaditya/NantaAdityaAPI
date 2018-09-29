@@ -1,5 +1,6 @@
 package com.nantaaditya.model.web;
 
+import java.util.Date;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -25,4 +26,6 @@ public class GetBlogWebResponse {
   private String url;
   private String keywords;
   private String description;
+  private Date createdDate;
+  private String createdBy;
 }
