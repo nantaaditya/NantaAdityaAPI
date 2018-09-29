@@ -72,13 +72,15 @@ public class GetBlogCommandImpl extends
       Blog b = blogs.get(blog.getTitleId());
       Page p = pages.get(blog.getTitleId());
       webResponses.add(GetBlogWebResponse.builder()
-          .bannerURL(blog.getBannerUrl())
-          .status(blog.isFlagDelete())
-          .title(blog.getTitle())
-          .titleId(blog.getTitleId())
-          .url(BLOG_HOST.concat(blog.getTitleId()))
+          .bannerURL(b.getBannerUrl())
+          .status(b.isFlagDelete())
+          .title(b.getTitle())
+          .titleId(b.getTitleId())
+          .url(BLOG_HOST.concat(b.getTitleId()))
           .description(p.getDescription())
           .keywords(p.getKeywords())
+          .createdDate(b.getCreatedDate())
+          .createdBy(b.getCreatedBy())
           .build());
     });
     return webResponses;
