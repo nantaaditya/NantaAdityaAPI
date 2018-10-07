@@ -1,7 +1,8 @@
 package com.nantaaditya.model.jsonld;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.nantaaditya.model.jsonld.inner.Author;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 // @formatter:off
@@ -13,12 +14,14 @@ import lombok.NoArgsConstructor;
 // @formatter:on
 
 @Data
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class AbstractSystemParameter {
-
-  @JsonProperty("@context")
-  private String context;
-  @JsonProperty("@type")
-  private String type;
+public class Website {
+  private String url;
+  private String name;
+  private String description;
+  private String keywords;
+  private String createdDate;
+  private Author author;
 }
