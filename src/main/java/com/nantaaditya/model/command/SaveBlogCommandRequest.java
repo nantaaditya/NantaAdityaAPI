@@ -27,4 +27,5 @@ public class SaveBlogCommandRequest {
   private String description;
   @NotBlank(message = "post is required")
   private String post;
+  private boolean notification;
 }
