@@ -5,6 +5,7 @@ import static org.mockito.Mockito.*;
 
 import com.nantaaditya.entity.Blog;
 import com.nantaaditya.entity.Page;
+import com.nantaaditya.helper.OneSignalHelper;
 import com.nantaaditya.model.EmptyResponse;
 import com.nantaaditya.model.command.SaveBlogCommandRequest;
 import com.nantaaditya.repository.BlogRepository;
@@ -26,7 +27,6 @@ import org.springframework.test.context.junit4.SpringRunner;
 // @formatter:on
 
 @RunWith(SpringRunner.class)
-@SpringBootTest
 public class SaveBlogCommandImplTest {
 
   @InjectMocks
@@ -37,6 +37,9 @@ public class SaveBlogCommandImplTest {
 
   @Mock
   private BlogRepository blogRepository;
+
+  @Mock
+  private OneSignalHelper oneSignalHelper;
 
   @Before
   public void setUp(){
@@ -82,6 +85,7 @@ public class SaveBlogCommandImplTest {
         .keywords("keywords")
         .post("post")
         .title("title")
+        .notification(true)
         .build();
   }
 }

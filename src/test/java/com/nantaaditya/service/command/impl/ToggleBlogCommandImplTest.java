@@ -9,6 +9,7 @@ import static org.mockito.Mockito.when;
 
 import com.nantaaditya.entity.Blog;
 import com.nantaaditya.entity.Page;
+import com.nantaaditya.helper.OneSignalHelper;
 import com.nantaaditya.model.EmptyResponse;
 import com.nantaaditya.repository.BlogRepository;
 import com.nantaaditya.repository.PageRepository;
@@ -30,7 +31,6 @@ import org.springframework.test.context.junit4.SpringRunner;
 // @formatter:on
 
 @RunWith(SpringRunner.class)
-@SpringBootTest
 public class ToggleBlogCommandImplTest {
 
   @InjectMocks
@@ -42,15 +42,30 @@ public class ToggleBlogCommandImplTest {
   @Mock
   private PageRepository pageRepository;
 
+  @Mock
+  private OneSignalHelper oneSignalHelper;
+
+  private Blog blog;
+  private Page page;
+
   @Before
   public void setUp(){
-
+    blog = Blog.builder()
+        .title("title")
+        .bannerUrl("bannerURL")
+        .build();
+    page = Page.builder()
+        .url("url")
+        .description("description")
+        .build();
   }
 
   @Test
   public void test(){
     this.mockFindPage(Page.builder().build());
     this.mockFindBlog(Blog.builder().build());
+    this.mockSaveBlog(false);
+    this.mockSavePage(false);
 
     EmptyResponse result = command.doExecute("id");
 
@@ -116,8 +131,20 @@ public class ToggleBlogCommandImplTest {
     verify(blogRepository, times(time)).findByTitleId(anyString());
   }
 
+  private void mockSaveBlog(boolean isDelete){
+    blog.setFlagDelete(isDelete);
+    when(blogRepository.save(any(Blog.class)))
+        .thenReturn(blog);
+  }
+
   private void verifySavePage(int time){
     verify(pageRepository, times(time)).save(any(Page.class));
+  }
+
+  private void mockSavePage(boolean isDelete){
+    page.setFlagDelete(isDelete);
+    when(pageRepository.save(any(Page.class)))
+        .thenReturn(page);
   }
 
   private void verifySaveBlog(int time){

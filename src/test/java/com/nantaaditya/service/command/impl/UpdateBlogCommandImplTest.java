@@ -26,7 +26,6 @@ import org.springframework.test.context.junit4.SpringRunner;
 // @formatter:on
 
 @RunWith(SpringRunner.class)
-@SpringBootTest
 public class UpdateBlogCommandImplTest {
 
   @InjectMocks

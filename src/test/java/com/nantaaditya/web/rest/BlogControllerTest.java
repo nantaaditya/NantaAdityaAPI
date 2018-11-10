@@ -12,11 +12,13 @@ import com.nantaaditya.helper.MapperHelper;
 import com.nantaaditya.helper.impl.ControllerHelper;
 import com.nantaaditya.helper.impl.ResponseHelper;
 import com.nantaaditya.model.EmptyResponse;
+import com.nantaaditya.model.command.RepublishNotificationCommandRequest;
 import com.nantaaditya.model.command.SaveBlogCommandRequest;
 import com.nantaaditya.model.web.GetBlogWebResponse;
 import com.nantaaditya.model.web.SaveBlogWebRequest;
 import com.nantaaditya.properties.ApiPath;
 import com.nantaaditya.service.command.GetBlogCommand;
+import com.nantaaditya.service.command.RepublishNotificationCommand;
 import com.nantaaditya.service.command.SaveBlogCommand;
 import java.util.Arrays;
 import java.util.UUID;
@@ -62,6 +64,7 @@ public class BlogControllerTest {
   private static final String REQUEST_ID = UUID.randomUUID().toString();
   private static final String SAVE_MESSAGE = "save blog success";
   private static final String GET_MESSAGE = "get blog success";
+  private static final String REPUBLISH_MESSAGE = "Success republish notification";
 
   @Before
   public void setUp() {
@@ -105,6 +108,15 @@ public class BlogControllerTest {
     this.verifyGet();
   }
 
+  @Test
+  public void testRepublish() throws Exception {
+    this.mockRepublish();
+    mockMvc.perform(post(ApiPath.BLOG + "/republish/titleId")
+      .param("requestId", REQUEST_ID))
+      .andExpect(status().isOk());
+    this.verifyRepublish();
+  }
+
   @After
   public void tearDown() {
     verifyNoMoreInteractions(helper);
@@ -134,4 +146,18 @@ public class BlogControllerTest {
     verify(this.helper).response(GetBlogCommand.class, "client", REQUEST_ID, GET_MESSAGE);
   }
 
+  private void mockRepublish(){
+    RepublishNotificationCommandRequest commandRequest = RepublishNotificationCommandRequest.builder()
+        .titleId("titleId")
+        .build();
+    when(this.helper.response(RepublishNotificationCommand.class, commandRequest, REQUEST_ID, REPUBLISH_MESSAGE))
+        .thenReturn(ResponseHelper.ok(REQUEST_ID, REPUBLISH_MESSAGE, EmptyResponse.getInstance()));
+  }
+
+  private void verifyRepublish(){
+    RepublishNotificationCommandRequest commandRequest = RepublishNotificationCommandRequest.builder()
+        .titleId("titleId")
+        .build();
+    verify(this.helper).response(RepublishNotificationCommand.class, commandRequest, REQUEST_ID, REPUBLISH_MESSAGE);
+  }
 }

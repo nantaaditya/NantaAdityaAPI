@@ -32,7 +32,6 @@ import org.springframework.test.util.ReflectionTestUtils;
 // @formatter:on
 
 @RunWith(SpringRunner.class)
-@SpringBootTest
 public class GetBlogCommandImplTest {
 
   @InjectMocks
